@@ -1,0 +1,426 @@
+{
+  "name": "lead qualification automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9953e25d-69d5-4238-9018-15a0b9992b1b",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2c94fabc-bf93-4121-b098-2a30352af5c4",
+      "name": "Webhook",
+      "webhookId": "9953e25d-69d5-4238-9018-15a0b9992b1b"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a797ec85-c79f-4551-90f2-e33fa65b83e0",
+              "name": "NAME",
+              "value": "={{ $json.body.data.fields[0].value }}",
+              "type": "string"
+            },
+            {
+              "id": "ba153895-b30a-487b-ab52-43a206d2c5ec",
+              "name": "EMAIL",
+              "value": "={{ $json.body.data.fields[1].value }}",
+              "type": "string"
+            },
+            {
+              "id": "ef1f9d4e-d0fa-421c-ad00-e0489fada6d2",
+              "name": "PHONE",
+              "value": "={{ $json.body.data.fields[2].value }}",
+              "type": "string"
+            },
+            {
+              "id": "b61711d0-e368-4a13-b285-9fca1f8e8006",
+              "name": "BUSINESS",
+              "value": "={{ $json.body.data.fields[3].value }}",
+              "type": "string"
+            },
+            {
+              "id": "1361a9ab-7694-4e9c-aa6b-5c06b738b458",
+              "name": "SERVICE",
+              "value": "={{ $json.body.data.fields[4].value }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        128,
+        -192
+      ],
+      "id": "9ccb3dbd-8a88-4bcf-98bd-623d113de229",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3319b1d1-bbb7-4f18-97c1-7ba54f3af1be",
+              "leftValue": "={{ $json.SERVICE }}",
+              "rightValue": "PRICE|PRICING|COST|SALES|AMOUNT|PRICES ",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        256,
+        -16
+      ],
+      "id": "4497448d-729a-4a3c-83c2-441b5d11ae97",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('If').item.json.EMAIL }}",
+        "subject": "Thanks for Reaching out",
+        "message": "Hello,we received your mail and will respond shortly. Regards",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        16
+      ],
+      "id": "0081f4c0-51c5-432f-bbe7-d57d28cd1369",
+      "name": "Send a message",
+      "webhookId": "6d2b0de7-7c62-418d-8499-12924a480155",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wUXi1oJBy435HB0t",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_OH0HubQal99ExfPBZ7wG3jOtapBRvoZC1uta9DsArs",
+          "mode": "list",
+          "cachedResultName": "n8n lead capture1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_OH0HubQal99ExfPBZ7wG3jOtapBRvoZC1uta9DsArs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_OH0HubQal99ExfPBZ7wG3jOtapBRvoZC1uta9DsArs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "NAME": "={{ $('If').item.json.NAME }}",
+            "EMAIL": "={{ $('If').item.json.EMAIL }}",
+            "PHONE": "={{ $('If').item.json.PHONE }}",
+            "BUSINESS": "={{ $('Edit Fields').item.json.BUSINESS }}",
+            "SERVICE": "={{ $('Edit Fields').item.json.SERVICE }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "NAME",
+              "displayName": "NAME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EMAIL",
+              "displayName": "EMAIL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PHONE",
+              "displayName": "PHONE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BUSINESS",
+              "displayName": "BUSINESS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "SERVICE",
+              "displayName": "SERVICE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        704,
+        -144
+      ],
+      "id": "380237f3-e147-4934-bdf4-9f072e6db609",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XqmRyOaXKyPpUn33",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_OH0HubQal99ExfPBZ7wG3jOtapBRvoZC1uta9DsArs",
+          "mode": "list",
+          "cachedResultName": "n8n lead capture1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_OH0HubQal99ExfPBZ7wG3jOtapBRvoZC1uta9DsArs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_OH0HubQal99ExfPBZ7wG3jOtapBRvoZC1uta9DsArs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "NAME": "={{ $json.NAME }}",
+            "EMAIL": "={{ $json.EMAIL }}",
+            "PHONE": "={{ $json.PHONE }}",
+            "BUSINESS": "={{ $json.BUSINESS }}",
+            "SERVICE": "={{ $json.SERVICE }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "NAME",
+              "displayName": "NAME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EMAIL",
+              "displayName": "EMAIL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PHONE",
+              "displayName": "PHONE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BUSINESS",
+              "displayName": "BUSINESS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "SERVICE",
+              "displayName": "SERVICE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        208
+      ],
+      "id": "9321a523-3956-4b35-bf35-a06e52842d0a",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XqmRyOaXKyPpUn33",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0BBW36QTRS",
+          "mode": "list",
+          "cachedResultName": "all-dollardreams"
+        },
+        "text": "={{ $json.NAME }} Submitted a form\nmessage was {{ $json.SERVICE }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.5,
+      "position": [
+        400,
+        -160
+      ],
+      "id": "d6f1ab8c-3c25-4592-bd7b-e40cc27161b1",
+      "name": "Send a message1",
+      "webhookId": "ca459426-0f67-4549-aea6-07d75ad5bfe7",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "wWH0R6hzODkFwnzx",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "458df6a5-f75f-4621-97ce-e3e34f81d7d7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "489713c2a46151633c71302119ed9e4843dddfc8688a4784a3dafca50f27ed19"
+  },
+  "nodeGroups": [],
+  "id": "IifIhPgpIxPftif9",
+  "tags": []
+}
