@@ -6,7 +6,7 @@ This workflow automatically identifies high-priority leads based on pricing-rela
 
 When a lead submits a form, the workflow analyzes the inquiry, notifies the sales team, sends an automated response, and logs the lead information for tracking.
 
-##Tech Stack
+## Tech Stack
 
 - n8n
 - Webhooks
@@ -15,7 +15,7 @@ When a lead submits a form, the workflow analyzes the inquiry, notifies the sale
 - IF Logic
 
   ## Workflow Logic
-  A lead submits an inquiry through a form.
+   A lead submits an inquiry through a form.
 The workflow analyzes the inquiry for pricing-related keywords.
 High-priority leads are identified using IF logic.
 High-priority leads trigger:
